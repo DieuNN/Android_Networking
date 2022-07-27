@@ -17,7 +17,7 @@ router.get('/guest/get/:id', (req, res) => {
 
     Guest.findOne({_id: id}, (error, result) => {
         if (error) {
-            res.end("Guest not found!")
+            res.json({e : "Guest not found"})
         }
         else {
             res.json(result)
@@ -59,7 +59,7 @@ router.get('/guest/edit/:id', (req, res) => {
         (last_name === undefined) ||
         (email === undefined)
     ) {
-        res.end("No data to update")
+        res.json({e : "No data to insert"})
         return
     }
 
@@ -80,7 +80,7 @@ router.get('/guest/delete/:id', (req, res) => {
 
     Guest.findOneAndDelete({_id: id}, {}, err => {
         if (err) {
-            res.end("Guest not found!")
+            res.json({e : "Guest not found"})
         }
         res.end("Deleted")
     })
