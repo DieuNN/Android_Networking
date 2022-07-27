@@ -16,7 +16,9 @@ router.get('/guest/get/:id', (req, res) => {
     const id = req.params.id
 
     Guest.findOne({_id: id}, (error, result) => {
-        if (error) throw error
+        if (error) {
+            res.end("Guest not found!")
+        }
         else {
             res.json(result)
         }
@@ -41,7 +43,9 @@ router.get('/guest/add/', (req, res) => {
     }
 
     newGuest.save(error => {
-        if (error) throw error
+        if (error) {
+            res.end(error)
+        }
         console.log("Saved")
     })
     res.end("Data inserted")
@@ -64,7 +68,9 @@ router.get('/guest/edit/:id', (req, res) => {
         lastName: last_name,
         email: email
     }, {}, err => {
-        if (err) throw err
+        if (err) {
+            res.end(err)
+        }
         res.end("Updated")
     })
 })
@@ -73,7 +79,9 @@ router.get('/guest/delete/:id', (req, res) => {
     const id = req.params.id
 
     Guest.findOneAndDelete({_id: id}, {}, err => {
-        if (err) throw err
+        if (err) {
+            res.end("Guest not found!")
+        }
         res.end("Deleted")
     })
 })
