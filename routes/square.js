@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Guest = require('../models/Guest')
+var Guest = require('../models/User')
 
 
 router.get("/square", (req, res) => {

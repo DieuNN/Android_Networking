@@ -6,7 +6,7 @@ var logger = require('morgan');
 let mongoose = require('mongoose')
 
 var indexRouter = require('./routes/index');
-var guestRouter = require('./routes/guests');
+var userRouter = require('./routes/user');
 let productRouter = require('./routes/product')
 let squareRouter = require("./routes/square")
 
@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use(guestRouter);
+app.use(userRouter);
 app.use(productRouter)
 app.use(squareRouter)
 
