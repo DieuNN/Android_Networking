@@ -26,11 +26,12 @@ router.post("/user/new", async (req, res) => {
 })
 
 router.get("/user/get", (req, res) => {
-    User.find({username : req.params.username}).limit(1).exec((error, result) => {
+    // const hashedPassword = md5(req.params.password)
+    User.find({username : req.query.username, password: req.query.password}).limit(1).exec((error, result) => {
         if (error) {
             res.end(error)
         }
-        res.end(result)
+        res.end(result.length.toString())
     })
 })
 
