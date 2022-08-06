@@ -28,4 +28,14 @@ router.get("/products", async (req, res) =>{
     })
 })
 
+// get product by id
+router.get("/products/get/:id", (req, res) => {
+    Product.find({_id : req.params.id}, (error, result) => {
+        if (error) {
+            res.end(error.toString())
+        }
+        res.json(result)
+    })
+})
+
 module.exports = router
