@@ -38,7 +38,7 @@ router.get("/user/get", async (req, res) => {
 router.post("/user/put", (req, res) => {
     const {username, productId, amount} = req.body
     User.updateOne({username : username}, {
-        $push :{
+        $addToSet :{
             products : {
                 productId : productId,
                 amount : amount
