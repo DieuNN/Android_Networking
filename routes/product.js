@@ -2,69 +2,29 @@ var express = require('express');
 var router = express.Router();
 var Product = require('../models/Product')
 
-router.get('/product', (req, res) => {
-    Product.find((error, result) => {
-        if (error) throw error
-        res.setHeader("Content-Type", "application/json")
-        res.json(result)
-    })
-})
-
-router.get('/product/get/:id', (req, res) => {
-    const id = req.params.id
-    Product.findById(id, {}, {}, (error, result) => {
-        if (error) throw error
-        res.json(result)
-    })
-})
-
-router.get('/product/add', (req, res) => {
-    const name = req.query.name
-    const price = req.query.price
-    const description = req.query.description
-
-
-    if (
-        name === undefined ||
-        price === undefined ||
-        description === undefined
-    ) {
-        res.end("Check your data")
-        return
-    }
-
+router.post("/product/add",async (req, res) => {
+    const {name, price, type, description, imageLink} = req.body
     const newProduct = new Product({
-        name: name,
+        name : name,
         price: price,
-        description: description,
+        type : type,
+        description : description,
+        imageLink : imageLink
     })
-
-    newProduct.save(error => {
-        if (error) throw error
-        res.end("Added")
+    newProduct.save((error, result) => {
+        if (error) {
+            res.end(error.toString())
+        }
+        res.end(result.toString())
     })
 })
 
-router.get('/product/edit/:id', (req, res) => {
-    const id = req.params.id
-
-    Product.findOneAndUpdate({_id: id}, {
-        name: req.query.name,
-        price: req.query.price,
-        description: req.query.description
-    }, {}, (err, doc) => {
-        if (err) throw err
-        else res.end("Edited")
-    })
-
-})
-
-router.get('/product/delete/:id', (req, res) => {
-    const id = req.params.id
-
-    Product.findOneAndDelete({_id: id}, {}, err => {
-        if (err) throw err
-        res.end("Deleted")
+router.get("/products", async (req, res) =>{
+    Product.find({}).sort({"createAt":'desc'}).exec((error, result) => {
+        if (error) {
+            res.end(error.toString())
+        }
+        res.json(result)
     })
 })
 
