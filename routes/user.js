@@ -14,7 +14,7 @@ router.post("/user/new", async (req, res) => {
         const newUser = new User({
             username: username,
             password: md5(password),
-            products: null
+            products: []
         })
         newUser.save((error1, result1) => {
             if (error1) {
@@ -31,7 +31,25 @@ router.get("/user/get", async (req, res) => {
         if (error) {
             res.end(error)
         }
-        res.end(result.length.toString())
+        res.json(result.length.toString())
+    })
+})
+
+router.post("/user/put", (req, res) => {
+    const {username, productId, amount} = req.body
+    User.updateOne({username : username}, {
+        $push :{
+            products : {
+                productId : productId,
+                amount : amount
+            }
+        }
+    }, {}, (error, result) => {
+        if (error) {
+            res.end(error.toString())
+            return
+        }
+        res.json(result)
     })
 })
 
