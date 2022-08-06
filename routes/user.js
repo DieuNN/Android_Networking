@@ -27,7 +27,10 @@ router.post("/user/new", async (req, res) => {
 
 router.get("/user/get", async (req, res) => {
     // const hashedPassword = md5(req.params.password)
-   await User.find({username : req.query.username, password: md5(req.query.password)}).limit(1).exec((error, result) => {
+    await User.find({
+        username: req.query.username,
+        password: md5(req.query.password)
+    }).limit(1).exec((error, result) => {
         if (error) {
             res.end(error)
         }
@@ -36,26 +39,32 @@ router.get("/user/get", async (req, res) => {
 })
 
 router.post("/user/put", (req, res) => {
-    const {username, productId, amount} = req.body
-    User.updateOne({username : username}, {
-        $addToSet :{
+    const {username, productId} = req.body
+
+    User.findOneAndUpdate({username : username}, {
+        $addToSet : {
             products : {
-                productId : productId,
-                amount : amount
+                productId : productId
             }
         }
-    }, {}, (error, result) => {
-        if (error) {
-            res.end(error.toString())
-            return
+    }, {new : false}, (err, doc) => {
+        if (err) {
+            res.end(err.toString())
         }
-        res.json(result)
+        res.end("ok")
     })
 })
 
+// get cart of user
+router.get("/user/cart/:username", (req, res) => {
+    User.find({username : req.params.username}, {}, {}, (error, result) => {
+        if (error) {
+            res.end(error.toString())
+        }
 
-
-
+        res.json(result)
+    })
+})
 
 
 module.exports = router;
