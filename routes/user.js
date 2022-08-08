@@ -66,5 +66,19 @@ router.get("/user/cart/:username", (req, res) => {
     })
 })
 
+// set cart empty
+router.post("/user/cart/:username", (req, res) => {
+    User.updateOne({username : req.body.username}, {
+        $set : {
+            products : []
+        }
+    }, {}, (error, result) => {
+        if (error) {
+            res.end(error.toString())
+        }
+        res.end("ok")
+    })
+})
+
 
 module.exports = router;
