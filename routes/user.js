@@ -67,7 +67,7 @@ router.get("/user/cart/:username", (req, res) => {
 })
 
 // set cart empty
-router.post("/user/cart/:username", (req, res) => {
+router.post("/user/cart", (req, res) => {
     User.updateOne({username : req.body.username}, {
         $set : {
             products : []
